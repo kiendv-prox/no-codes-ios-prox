@@ -66,4 +66,7 @@ public final class NoCodes {
     flowCoordinator?.close()
   }
   
+  public func forceClose() {
+    flowCoordinator?.forceClose()
+  }
 }

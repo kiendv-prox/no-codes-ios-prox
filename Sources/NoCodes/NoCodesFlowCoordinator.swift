@@ -30,12 +30,22 @@ final class NoCodesFlowCoordinator {
     self.delegate = delegate
   }
   
+  func getIsCloseBlocked: Bool { currentVC?.getCloseBlocked() ?? false }
+  
   func set(screenCustomizationDelegate: NoCodes.ScreenCustomizationDelegate) {
     self.screenCustomizationDelegate = screenCustomizationDelegate
   }
   
   func close() {
     currentVC?.close()
+  }
+  
+  func forceClose() {
+    currentVC?.forceClose()
+  }
+  
+  func setCloseBlocked(_ blocked: Bool) {
+    currentVC?.setCloseBlocked(blocked)
   }
   
   @MainActor

@@ -36,7 +36,7 @@ protocol NoCodesViewControllerDelegate {
   
 }
 
-final class NoCodesViewController: UIViewController {
+public class NoCodesViewController: UIViewController {
   
   private var webView: WKWebView!
   private var activityIndicator: UIActivityIndicatorView!
@@ -50,6 +50,7 @@ final class NoCodesViewController: UIViewController {
   private var logger: LoggerWrapper!
   private var skeletonView: SkeletonView!
   private var presentationConfiguration: NoCodes.PresentationConfiguration!
+  private var isCloseBlocked: Bool = false
   
   init(screenId: String?, contextKey: String?, delegate: NoCodesViewControllerDelegate, noCodesMapper: NoCodesMapperInterface, noCodesService: NoCodesServiceInterface, viewsAssembly: ViewsAssembly, logger: LoggerWrapper, presentationConfiguration: NoCodes.PresentationConfiguration) {
     self.screenId = screenId
@@ -141,6 +142,18 @@ final class NoCodesViewController: UIViewController {
     close(action: nil)
   }
   
+  func forceClose() {
+    forceClose(action: nil)
+  }
+  
+  func setCloseBlocked(_ blocked: Bool) {
+    isCloseBlocked = blocked
+  }
+  
+  func getCloseBlocked() -> Bool {
+    isCloseBlocked
+  }
+  
   func addSkeleton() {
     view.addSubview(skeletonView)
     skeletonView.startAnimation()
@@ -206,6 +219,11 @@ extension NoCodesViewController {
   }
   
   private func handle(closeAction: NoCodes.Action) {
+    guard !isCloseBlocked else {
+      delegate.noCodesFinishedExecuting(action: closeAction)
+      delegate.noCodesFinished()
+      return
+    }
     if self.navigationController?.viewControllers.count ?? 0 > 1 {
       navigationController?.popViewController(animated: true)
       delegate.noCodesFinishedExecuting(action: closeAction)
@@ -327,6 +345,14 @@ extension NoCodesViewController {
   }
   
   private func close(action: NoCodes.Action?) {
+    guard isCloseBlocked else {
+      delegate?.noCodesFinished()
+      return
+    }
+    forceClose(action: action)
+  }
+  
+  private func forceClose(action: NoCodes.Action?) {
     if isModalPresentation {
       dismiss(animated: true) { [weak self] in
         self?.delegate?.noCodesFinished()
