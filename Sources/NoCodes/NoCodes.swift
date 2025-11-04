@@ -52,6 +52,10 @@ public final class NoCodes {
     flowCoordinator?.showScreen(withContextKey: contextKey)
   }
   
+  public func setCloseBlocked(_ blocked: Bool) {
+    flowCoordinator?.setCloseBlocked(blocked)
+  }
+  
   /// Use this function to display the screen.
   /// - Parameters:
   ///   - id: identifier of the screen.
