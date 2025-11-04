@@ -72,11 +72,11 @@ public class NoCodesViewController: UIViewController {
     super.init(coder: coder)
   }
   
-  override var prefersStatusBarHidden: Bool {
+  public override var prefersStatusBarHidden: Bool {
     return presentationConfiguration.statusBarHidden
   }
     
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
     
     let userContentController = WKUserContentController()
@@ -131,7 +131,7 @@ public class NoCodesViewController: UIViewController {
     }
   }
   
-  override func viewDidLayoutSubviews() {
+  public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     
     activityIndicator.center = view.center
@@ -168,7 +168,7 @@ public class NoCodesViewController: UIViewController {
 
 extension NoCodesViewController: WKScriptMessageHandler {
   
-  func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+  public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
     guard let body = message.body as? [String: Any] else { return }
     
     let action: NoCodes.Action = noCodesMapper.map(rawAction: body)
@@ -380,7 +380,7 @@ extension NoCodesViewController {
 }
 
 extension NoCodesViewController: UIScrollViewDelegate {
-  func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+  public func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
     scrollView.pinchGestureRecognizer?.isEnabled = false
   }
 }
