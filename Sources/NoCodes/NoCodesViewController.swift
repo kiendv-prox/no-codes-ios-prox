@@ -107,6 +107,44 @@ public class NoCodesViewController: UIViewController {
     webView.setNeedsLayout()
     webView.layoutIfNeeded()
     
+    webViewPlay()
+  }
+  
+  public override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    
+    activityIndicator.center = view.center
+    webView.frame = view.frame
+  }
+  
+  func close() {
+    close(action: nil)
+  }
+  
+  func forceClose() {
+    isCloseBlocked = false
+    forceClose(action: nil)
+  }
+  
+  func setCloseBlocked(_ blocked: Bool) {
+    isCloseBlocked = blocked
+  }
+  
+  func getCloseBlocked() -> Bool {
+    isCloseBlocked
+  }
+  
+  func addSkeleton() {
+    view.addSubview(skeletonView)
+    skeletonView.startAnimation()
+  }
+  
+  func removeSkeleton() {
+    skeletonView.removeFromSuperview()
+    skeletonView.stopAnimation()
+  }
+  
+  private func webViewPlay() {
     Task {
       do {
         let screen: NoCodes.Screen
@@ -130,40 +168,6 @@ public class NoCodesViewController: UIViewController {
       }
     }
   }
-  
-  public override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    
-    activityIndicator.center = view.center
-    webView.frame = view.frame
-  }
-  
-  func close() {
-    close(action: nil)
-  }
-  
-  func forceClose() {
-    forceClose(action: nil)
-  }
-  
-  func setCloseBlocked(_ blocked: Bool) {
-    isCloseBlocked = blocked
-  }
-  
-  func getCloseBlocked() -> Bool {
-    isCloseBlocked
-  }
-  
-  func addSkeleton() {
-    view.addSubview(skeletonView)
-    skeletonView.startAnimation()
-  }
-  
-  func removeSkeleton() {
-    skeletonView.removeFromSuperview()
-    skeletonView.stopAnimation()
-  }
-  
 }
 
 extension NoCodesViewController: WKScriptMessageHandler {
@@ -176,6 +180,7 @@ extension NoCodesViewController: WKScriptMessageHandler {
     if action.type == .showScreen {
       return removeSkeleton()
     }
+    print("[NoCodes] [\(URL(fileURLWithPath: #file).lastPathComponent)] action type: \(action.type), params: \(action.parameters)")
     
     if action.type != .loadProducts {
       delegate.noCodesStartsExecuting(action: action)
@@ -345,7 +350,7 @@ extension NoCodesViewController {
   }
   
   private func close(action: NoCodes.Action?) {
-    guard isCloseBlocked else {
+    guard !isCloseBlocked else {
       delegate?.noCodesFinished()
       return
     }
