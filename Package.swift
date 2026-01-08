@@ -5,7 +5,7 @@ import PackageDescription
 
 let sources: [String] = ["NoCodes"]
 var dependencies: [Package.Dependency] = [
-    .package(url: "git@github.com:qonversion/qonversion-ios-sdk.git", from: "5.0.0")]
+    .package(url: "git@github.com:qonversion/qonversion-ios-sdk.git", from: "6.0.0")]
 
 let package = Package(
     name: "NoCodes",
@@ -15,11 +15,11 @@ let package = Package(
     products: [
         .library(
             name: "QonversionNoCodes",
-            targets: ["NoCodes"])
+            targets: ["NoCodesSDK"])
     ],
     dependencies: dependencies,
     targets: [.target(
-                name: "NoCodes",
+                name: "NoCodesSDK",
                 dependencies: [.product(name: "Qonversion", package: "qonversion-ios-sdk")],
                 path: "Sources",
                 resources: [

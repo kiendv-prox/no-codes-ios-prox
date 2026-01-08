@@ -6,8 +6,8 @@
         "repositoryURL": "git@github.com:qonversion/qonversion-ios-sdk.git",
         "state": {
           "branch": null,
-          "revision": "0ec224f004c0673d942b23680ee046cba2a7e0be",
-          "version": "5.13.0"
+          "revision": "88396dd0429420f0595d3826eb64a63ea956f98e",
+          "version": "6.2.1"
         }
       }
     ]
